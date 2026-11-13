@@ -14,11 +14,11 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
-  <!-- Plotly.js for Advanced Data Science Charts (Replaced Chart.js) -->
+  <!-- Plotly.js for Advanced Data Science Charts -->
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 
   <style>
-    /* Basic Reset & Strict Width Lock (Fixes Desktop Zoom-out shifting) */
+    /* Basic Reset & Strict Width Lock */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -115,19 +115,26 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
     }
 
-    /* Dropdowns */
-    .custom-select {
+    /* Input & Dropdowns */
+    .custom-input, .custom-select {
       background-color: #111113;
       border: 1px solid #27272a;
       color: #fafafa;
-      padding: 8px 12px;
       border-radius: 6px;
       font-size: 13px;
       outline: none;
+    }
+    
+    .custom-input {
+      padding: 10px;
+    }
+    
+    .custom-select {
+      padding: 8px 12px;
       cursor: pointer;
     }
 
-    body.light-mode .custom-select {
+    body.light-mode .custom-input, body.light-mode .custom-select {
       background-color: #f8fafc;
       border-color: #cbd5e1;
       color: #0f172a;
@@ -416,7 +423,7 @@
     .chart-box {
       position: relative;
       width: 100%;
-      height: 450px; /* Increased height for premium view */
+      height: 450px;
     }
 
     /* Cleaning Action Buttons */
@@ -447,14 +454,7 @@
       color: #0f172a;
     }
 
-    /* Issue Cards */
-    .issue-high {
-      border-left: 4px solid #f43f5e;
-    }
-    .issue-medium {
-      border-left: 4px solid #f59e0b;
-    }
-
+    /* Badges & Tags */
     .tag-badge {
       padding: 4px 10px;
       border-radius: 20px;
@@ -534,7 +534,7 @@
   <!-- Notification Container -->
   <div class="toast-area" id="toastArea"></div>
 
-  <!-- Mobile Sidebar Menu (Clean version) -->
+  <!-- Mobile Sidebar Menu -->
   <div class="mobile-bg" id="mobileBg" onclick="closeMenu()"></div>
   <div class="mobile-sidebar" id="mobileSidebar">
     <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom border-secondary">
@@ -543,11 +543,11 @@
     </div>
     <div class="d-flex flex-column gap-2">
       <a href="#upload" class="nav-item-link" onclick="closeMenu()">Upload Dataset</a>
-      <a href="#preview" class="nav-item-link" onclick="closeMenu()">Dataset Preview</a>
+      <a href="#preview" class="nav-item-link" onclick="closeMenu()">Raw Preview</a>
       <a href="#eda" class="nav-item-link" onclick="closeMenu()">EDA Summary</a>
       <a href="#cleaning" class="nav-item-link" onclick="closeMenu()">Data Cleaning</a>
+      <a href="#cleaned-preview" class="nav-item-link" onclick="closeMenu()">Cleaned Data</a>
       <a href="#visualization" class="nav-item-link" onclick="closeMenu()">Visualizations</a>
-      <a href="#problems" class="nav-item-link" onclick="closeMenu()">Issue Extraction</a>
       <a href="#insights" class="nav-item-link" onclick="closeMenu()">AI Insights</a>
       <a href="#recommendations" class="nav-item-link" onclick="closeMenu()">Solutions</a>
       <a href="#download" class="nav-item-link" onclick="closeMenu()">Export Report</a>
@@ -572,6 +572,7 @@
         <a href="#preview" class="nav-item-link">Preview</a>
         <a href="#eda" class="nav-item-link">EDA</a>
         <a href="#cleaning" class="nav-item-link">Cleaning</a>
+        <a href="#cleaned-preview" class="nav-item-link">Cleaned Data</a>
         <a href="#visualization" class="nav-item-link">Visuals</a>
         <a href="#insights" class="nav-item-link">Insights</a>
       </nav>
@@ -692,7 +693,7 @@
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
           <div>
             <span class="section-tag">Raw Ingestion View</span>
-            <h2 class="h3 fw-bold mb-0">Dataset Preview</h2>
+            <h2 class="h3 fw-bold mb-0">Raw Dataset Preview</h2>
           </div>
           <div class="d-flex flex-wrap gap-2">
             <span class="px-3 py-1 rounded border border-secondary font-mono small"><strong style="color:#6366f1;">Rows:</strong> <span id="topRowBadge">1,250</span></span>
@@ -703,7 +704,7 @@
         <div class="custom-card mb-3 p-3">
           <div class="row">
             <div class="col-md-6">
-              <input type="text" id="searchBox" class="form-control font-mono small" style="background:#111113; border:1px solid #27272a; color:#fff; padding:10px; border-radius:6px; width:100%;" placeholder="Search dataset records..." onkeyup="searchTable()">
+              <input type="text" id="searchBox" class="form-control custom-input w-100 font-mono small" placeholder="Search raw dataset records..." onkeyup="searchTable()">
             </div>
           </div>
         </div>
@@ -830,6 +831,81 @@
       </div>
     </section>
 
+    <!-- 5.1 NEW: CLEANED DATASET PREVIEW -->
+    <section id="cleaned-preview" class="section-divider">
+      <div class="container-xxl">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+          <div>
+            <span class="section-tag" style="color: #10b981;">Refined Output</span>
+            <h2 class="h3 fw-bold mb-0">Cleaned Dataset Preview</h2>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded border border-secondary font-mono small"><strong style="color:#10b981;">Rows:</strong> <span id="cleanedRowBadge">1,250</span></span>
+            <span class="px-3 py-1 rounded border border-secondary font-mono small"><strong style="color:#10b981;">Cols:</strong> <span id="cleanedColBadge">8</span></span>
+          </div>
+        </div>
+
+        <div class="custom-card mb-3 p-3">
+          <div class="row">
+            <div class="col-md-6">
+              <input type="text" id="cleanedSearchBox" class="form-control custom-input w-100 font-mono small" placeholder="Search cleaned dataset records..." onkeyup="searchCleanedTable()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Green tinted border to signify cleaned data -->
+        <div class="table-wrapper" style="border-color: rgba(16, 185, 129, 0.3);">
+          <table class="data-table" id="cleanedTable">
+            <thead>
+              <tr>
+                <th>Record ID</th>
+                <th>Transaction Date</th>
+                <th>Customer Category</th>
+                <th>Region</th>
+                <th>Sales Amount ($)</th>
+                <th>Expenses ($)</th>
+                <th>Profit Margin (%)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Initial dummy data is same as raw, will update dynamically on clean -->
+              <tr>
+                <td class="font-mono">#TX-9021</td>
+                <td>2026-03-01</td>
+                <td>Enterprise</td>
+                <td>North America</td>
+                <td class="font-mono">$45,200.00</td>
+                <td class="font-mono">$12,100.00</td>
+                <td class="font-mono text-success">73.2%</td>
+                <td><span class="badge bg-success bg-opacity-10 text-success">Verified</span></td>
+              </tr>
+              <tr>
+                <td class="font-mono">#TX-9022</td>
+                <td>2026-03-01</td>
+                <td>SMB</td>
+                <td>EMEA</td>
+                <td class="font-mono">$8,450.00</td>
+                <td class="font-mono">$9,100.00</td>
+                <td class="font-mono text-danger">-7.6%</td>
+                <td><span class="badge bg-warning bg-opacity-10 text-warning">Anomaly</span></td>
+              </tr>
+              <tr>
+                <td class="font-mono">#TX-9023</td>
+                <td>2026-03-02</td>
+                <td>Consumer</td>
+                <td>APAC</td>
+                <td class="font-mono text-muted-custom">NULL</td>
+                <td class="font-mono">$1,400.00</td>
+                <td class="font-mono text-muted-custom">NULL</td>
+                <td><span class="badge bg-danger bg-opacity-10 text-danger">Missing</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <!-- 6. DYNAMIC VISUALIZATION EXPLORER -->
     <section id="visualization" class="section-divider">
       <div class="container-xxl">
@@ -868,38 +944,6 @@
               <!-- Plotly Canvas Container -->
               <div class="chart-box" id="plotlyCanvas"></div>
               
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7. PROBLEM EXTRACTION -->
-    <section id="problems" class="section-divider">
-      <div class="container-xxl">
-        <div class="mb-4">
-          <span class="section-tag">Diagnostic Scanner</span>
-          <h2 class="h3 fw-bold">Detected Anomalies & Data Issues</h2>
-        </div>
-        <div class="row g-3">
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="custom-card issue-high h-100">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="tag-badge tag-high">High Severity</span>
-                <i data-lucide="alert-circle" class="text-danger" style="width: 18px;"></i>
-              </div>
-              <h6 class="fw-bold mb-1">Missing Values</h6>
-              <p class="text-muted-custom small mb-0" id="missingIssueText">42 empty cells in critical numerical fields.</p>
-            </div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="custom-card issue-medium h-100">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="tag-badge tag-medium">Medium</span>
-                <i data-lucide="copy" class="text-warning" style="width: 18px;"></i>
-              </div>
-              <h6 class="fw-bold mb-1">Duplicate Rows</h6>
-              <p class="text-muted-custom small mb-0" id="dupIssueText">14 duplicate transaction entries detected in raw batch.</p>
             </div>
           </div>
         </div>
@@ -1135,16 +1179,24 @@
     function updateDashboardUI(data) {
       currentDataObj = data; // Important: update global data for chart builder
 
-      let table = document.getElementById('rawTable');
-      let thead = table.querySelector('thead');
-      let tbody = table.querySelector('tbody');
+      // Update RAW Table 
+      let tableRaw = document.getElementById('rawTable');
+      let theadRaw = tableRaw.querySelector('thead');
+      let tbodyRaw = tableRaw.querySelector('tbody');
+      
+      // Update CLEANED Table 
+      let tableClean = document.getElementById('cleanedTable');
+      let theadClean = tableClean.querySelector('thead');
+      let tbodyClean = tableClean.querySelector('tbody');
 
       let headerHTML = '<tr>';
       for (let i = 0; i < data.columns.length; i++) {
         headerHTML += '<th>' + data.columns[i] + '</th>';
       }
       headerHTML += '</tr>';
-      thead.innerHTML = headerHTML;
+      
+      theadRaw.innerHTML = headerHTML;
+      theadClean.innerHTML = headerHTML;
 
       let bodyHTML = '';
       for (let r = 0; r < data.records.length; r++) {
@@ -1159,10 +1211,18 @@
         }
         bodyHTML += '</tr>';
       }
-      tbody.innerHTML = bodyHTML;
+      
+      // Update both tables with incoming data 
+      // (Backend se jo step aayega, us se update ho jayega)
+      tbodyRaw.innerHTML = bodyHTML;
+      tbodyClean.innerHTML = bodyHTML;
 
+      // Update Badges
       document.getElementById('topRowBadge').textContent = data.rows;
       document.getElementById('topColBadge').textContent = data.cols;
+      
+      document.getElementById('cleanedRowBadge').textContent = data.rows;
+      document.getElementById('cleanedColBadge').textContent = data.cols;
 
       let edaCards = document.querySelectorAll('#eda .fs-5');
       if (edaCards.length >= 4) {
@@ -1179,9 +1239,6 @@
         heroStats[2].textContent = data.missing + data.duplicates;
       }
 
-      document.getElementById('missingIssueText').textContent = data.missing + " empty cells detected across columns.";
-      document.getElementById('dupIssueText').textContent = data.duplicates + " duplicate entries detected in dataset.";
-
       populateDropdowns(data.columns);
       renderCustomChart();
     }
@@ -1197,9 +1254,21 @@
       setTimeout(function() { box.remove(); }, 3500);
     }
 
+    // Search for Raw Table
     function searchTable() {
       let input = document.getElementById('searchBox').value.toLowerCase();
       let table = document.getElementById('rawTable');
+      let rows = table.getElementsByTagName('tr');
+      for (let i = 1; i < rows.length; i++) {
+        let rowText = rows[i].textContent.toLowerCase();
+        rows[i].style.display = rowText.indexOf(input) > -1 ? '' : 'none';
+      }
+    }
+    
+    // Search for Cleaned Table
+    function searchCleanedTable() {
+      let input = document.getElementById('cleanedSearchBox').value.toLowerCase();
+      let table = document.getElementById('cleanedTable');
       let rows = table.getElementsByTagName('tr');
       for (let i = 1; i < rows.length; i++) {
         let rowText = rows[i].textContent.toLowerCase();
@@ -1391,8 +1460,6 @@
         
         if (numIdxs.length < 2) {
           showMessage("Correlation matrix requires at least 2 numerical columns!");
-        } else {
-          showMessage("Correlation Matrix auto-generated for all numeric fields.");
         }
       }
 

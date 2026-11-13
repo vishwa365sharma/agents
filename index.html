@@ -800,7 +800,7 @@
       </div>
     </section>
 
-    <!-- 5. DATA CLEANING -->
+    <!-- 5. DATA CLEANING (Updated with Methods Dropdown) -->
     <section id="cleaning" class="section-divider">
       <div class="container-xxl">
         <div class="mb-4">
@@ -810,19 +810,28 @@
         </div>
         <div class="row g-3">
           <div class="col-12 col-md-4">
-            <button class="clean-action-btn" onclick="cleanDataset('drop_missing')">
+            <button class="clean-action-btn h-100" onclick="cleanDataset('drop_missing')">
               <span>Remove Missing Values</span>
               <i data-lucide="trash-2" style="width: 18px;"></i>
             </button>
           </div>
           <div class="col-12 col-md-4">
-            <button class="clean-action-btn" onclick="cleanDataset('fill_missing')">
-              <span>Fill Missing Values (Impute)</span>
-              <i data-lucide="sparkles" style="width: 18px;"></i>
-            </button>
+            <div class="d-flex align-items-stretch gap-2 h-100">
+              <select id="imputeMethod" class="custom-select w-50" style="padding-left: 10px;">
+                <option value="mean">Mean</option>
+                <option value="median">Median</option>
+                <option value="mode">Mode</option>
+                <option value="max">Max</option>
+                <option value="min">Min</option>
+              </select>
+              <button class="clean-action-btn w-50" onclick="cleanDataset('fill_missing')">
+                <span>Fill Values</span>
+                <i data-lucide="sparkles" style="width: 18px;"></i>
+              </button>
+            </div>
           </div>
           <div class="col-12 col-md-4">
-            <button class="clean-action-btn" onclick="cleanDataset('drop_duplicates')">
+            <button class="clean-action-btn h-100" onclick="cleanDataset('drop_duplicates')">
               <span>Remove Duplicate Rows</span>
               <i data-lucide="copy-x" style="width: 18px;"></i>
             </button>
@@ -831,7 +840,7 @@
       </div>
     </section>
 
-    <!-- 5.1 NEW: CLEANED DATASET PREVIEW -->
+    <!-- 5.1 CLEANED DATASET PREVIEW -->
     <section id="cleaned-preview" class="section-divider">
       <div class="container-xxl">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
@@ -853,7 +862,6 @@
           </div>
         </div>
 
-        <!-- Green tinted border to signify cleaned data -->
         <div class="table-wrapper" style="border-color: rgba(16, 185, 129, 0.3);">
           <table class="data-table" id="cleanedTable">
             <thead>
@@ -869,7 +877,6 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Initial dummy data is same as raw, will update dynamically on clean -->
               <tr>
                 <td class="font-mono">#TX-9021</td>
                 <td>2026-03-01</td>
@@ -1065,7 +1072,7 @@
     // Apne Render backend ka live URL yahan paste karein
     let BACKEND_URL = "https://insightai-backend.onrender.com";
 
-    // Dummy Dataset (jab tak user asli file upload nahi karta)
+    // Dummy Dataset
     let currentDataObj = {
       columns: ["Record ID", "Transaction Date", "Customer Category", "Region", "Sales Amount", "Expenses", "Profit Margin", "Status"],
       records: [
@@ -1082,7 +1089,7 @@
     window.onload = function() {
       lucide.createIcons();
       populateDropdowns(currentDataObj.columns);
-      renderCustomChart(); // Render Plotly chart on load
+      renderCustomChart();
     };
 
     // Mobile Menu
@@ -1099,7 +1106,6 @@
     function switchTheme() {
       let body = document.body;
       let icon = document.getElementById('themeIcon');
-
       if (body.classList.contains('light-mode')) {
         body.classList.remove('light-mode');
         icon.textContent = '🌙';
@@ -1131,10 +1137,7 @@
       })
       .then(function(response) { return response.json(); })
       .then(function(data) {
-        if (data.error) {
-          showMessage("Error: " + data.error);
-          return;
-        }
+        if (data.error) { showMessage("Error: " + data.error); return; }
         bar.style.width = '100%';
         document.getElementById('fileMetaText').textContent = sizeInMB + " MB • Analyzed Successfully";
         updateDashboardUI(data);
@@ -1146,13 +1149,21 @@
       });
     }
 
-    // Data Cleaning API
+    // Data Cleaning API (UPDATED for Dropdown Selection)
     function cleanDataset(actionType) {
       showMessage("Cleaning dataset...");
+      
+      let payload = { action: actionType };
+      
+      // Agar missing value fill karni hai, toh selected method append karein
+      if (actionType === 'fill_missing') {
+        payload.method = document.getElementById('imputeMethod').value;
+      }
+
       fetch(BACKEND_URL + '/clean', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: actionType })
+        body: JSON.stringify(payload)
       })
       .then(function(response) { return response.json(); })
       .then(function(data) {
@@ -1177,14 +1188,12 @@
 
     // Update the whole UI from Python response
     function updateDashboardUI(data) {
-      currentDataObj = data; // Important: update global data for chart builder
-
-      // Update RAW Table 
+      currentDataObj = data; 
+      
       let tableRaw = document.getElementById('rawTable');
       let theadRaw = tableRaw.querySelector('thead');
       let tbodyRaw = tableRaw.querySelector('tbody');
       
-      // Update CLEANED Table 
       let tableClean = document.getElementById('cleanedTable');
       let theadClean = tableClean.querySelector('thead');
       let tbodyClean = tableClean.querySelector('tbody');
@@ -1212,12 +1221,9 @@
         bodyHTML += '</tr>';
       }
       
-      // Update both tables with incoming data 
-      // (Backend se jo step aayega, us se update ho jayega)
       tbodyRaw.innerHTML = bodyHTML;
       tbodyClean.innerHTML = bodyHTML;
 
-      // Update Badges
       document.getElementById('topRowBadge').textContent = data.rows;
       document.getElementById('topColBadge').textContent = data.cols;
       
@@ -1248,13 +1254,11 @@
       let box = document.createElement('div');
       box.className = 'custom-card p-3 mb-2 d-flex align-items-center gap-2';
       box.innerHTML = '<i data-lucide="check-circle" class="text-success" style="width:18px; flex-shrink:0;"></i><span class="small fw-medium">' + text + '</span>';
-
       area.appendChild(box);
       lucide.createIcons();
       setTimeout(function() { box.remove(); }, 3500);
     }
 
-    // Search for Raw Table
     function searchTable() {
       let input = document.getElementById('searchBox').value.toLowerCase();
       let table = document.getElementById('rawTable');
@@ -1265,7 +1269,6 @@
       }
     }
     
-    // Search for Cleaned Table
     function searchCleanedTable() {
       let input = document.getElementById('cleanedSearchBox').value.toLowerCase();
       let table = document.getElementById('cleanedTable');
@@ -1276,13 +1279,10 @@
       }
     }
 
-
     /* =========================================================================
-       PRO-LEVEL VISUALIZATIONS USING PLOTLY.JS 
-       (Handles Bar, Line, Scatter, Pie, Histogram, Violin, & Heatmap Matrix)
+       PRO-LEVEL VISUALIZATIONS USING PLOTLY.JS (ZOOM DISABLED)
        ========================================================================= */
        
-    // Populate the X and Y dropdowns
     function populateDropdowns(columns) {
       let xSelect = document.getElementById('xAxisSelect');
       let ySelect = document.getElementById('yAxisSelect');
@@ -1296,13 +1296,11 @@
       }
       
       if (columns.length > 1) {
-        // Try to auto-select a numerical column for Y-axis (Sales, Expenses, etc)
         let numColIndex = columns.findIndex(col => col.toLowerCase().match(/amount|price|sale|expense|margin/));
         ySelect.selectedIndex = numColIndex > -1 ? numColIndex : 1;
       }
     }
 
-    // Helper: Calculate Pearson Correlation (Math for Heatmap)
     function getPearsonCorrelation(x, y) {
       let n = x.length;
       let sum_x = 0, sum_y = 0, sum_xy = 0, sum_x2 = 0, sum_y2 = 0;
@@ -1319,7 +1317,6 @@
       return step1 / step4;
     }
 
-    // Render the selected Chart using Plotly
     function renderCustomChart() {
       if (!currentDataObj || currentDataObj.records.length === 0) return;
 
@@ -1331,31 +1328,28 @@
       let xLabels = [];
       let yValues = [];
 
-      // We limit to 500 rows on frontend so the browser doesn't freeze on huge datasets
       let limit = Math.min(currentDataObj.records.length, 500); 
       
       for (let i = 0; i < limit; i++) {
         xLabels.push(currentDataObj.records[i][xColIdx]);
-        
         let rawY = String(currentDataObj.records[i][yColIdx]);
         let cleanY = parseFloat(rawY.replace(/[^0-9.-]+/g, ""));
         yValues.push(isNaN(cleanY) ? 0 : cleanY);
       }
 
-      // Theme Colors
       let isLight = document.body.classList.contains('light-mode');
       let textColor = isLight ? '#0f172a' : '#fafafa';
       let gridColor = isLight ? '#e2e8f0' : '#27272a';
       let paperBg = 'rgba(0,0,0,0)'; 
 
-      // Master Layout for Plotly
+      // Master Layout for Plotly (fixedrange: true disables dragging/zooming)
       let layout = {
         paper_bgcolor: paperBg,
         plot_bgcolor: paperBg,
         font: { family: 'Inter', color: textColor },
         margin: { t: 40, l: 50, r: 20, b: 50 },
-        xaxis: { title: colNames[xColIdx], gridcolor: gridColor, zerolinecolor: gridColor },
-        yaxis: { title: colNames[yColIdx], gridcolor: gridColor, zerolinecolor: gridColor }
+        xaxis: { title: colNames[xColIdx], gridcolor: gridColor, zerolinecolor: gridColor, fixedrange: true },
+        yaxis: { title: colNames[yColIdx], gridcolor: gridColor, zerolinecolor: gridColor, fixedrange: true }
       };
 
       let plotData = [];
@@ -1412,11 +1406,9 @@
         });
       } 
       else if (type === 'heatmap') {
-        // Automatic Pearson Correlation Matrix
         let numIdxs = [];
         let numNames = [];
         
-        // Find which columns actually contain numbers
         for(let c = 0; c < colNames.length; c++) {
           let testVal = currentDataObj.records[0][c];
           let parsed = parseFloat(String(testVal).replace(/[^0-9.-]+/g, ""));
@@ -1426,7 +1418,6 @@
           }
         }
 
-        // Build Z-Matrix (Correlation Scores)
         let zMatrix = [];
         for(let i=0; i<numIdxs.length; i++) {
           let rowArray = [];
@@ -1463,7 +1454,6 @@
         }
       }
 
-      // Render it to the div!
       Plotly.newPlot('plotlyCanvas', plotData, layout, {responsive: true, displayModeBar: false});
     }
   </script>

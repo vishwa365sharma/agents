@@ -14,11 +14,11 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
-  <!-- Chart.js for Graphs -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Plotly.js for Advanced Data Science Charts (Replaced Chart.js) -->
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 
   <style>
-    /* Basic Reset & Strict Width Lock */
+    /* Basic Reset & Strict Width Lock (Fixes Desktop Zoom-out shifting) */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -37,7 +37,7 @@
       color: #fafafa;
       font-family: 'Inter', sans-serif;
       line-height: 1.5;
-      transition: 0.3s;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     /* Center Container */
@@ -115,15 +115,16 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
     }
 
-    /* Select Dropdowns (For Custom Chart) */
+    /* Dropdowns */
     .custom-select {
       background-color: #111113;
       border: 1px solid #27272a;
       color: #fafafa;
-      padding: 6px 12px;
+      padding: 8px 12px;
       border-radius: 6px;
       font-size: 13px;
       outline: none;
+      cursor: pointer;
     }
 
     body.light-mode .custom-select {
@@ -411,15 +412,11 @@
       border-bottom: 1px solid #e2e8f0;
     }
 
-    /* Chart Container Fix */
+    /* Plotly Chart Container Fix */
     .chart-box {
       position: relative;
       width: 100%;
-      height: 210px;
-    }
-
-    .chart-box.large {
-      height: 280px;
+      height: 450px; /* Increased height for premium view */
     }
 
     /* Cleaning Action Buttons */
@@ -450,7 +447,7 @@
       color: #0f172a;
     }
 
-    /* Issue & Priority Cards */
+    /* Issue Cards */
     .issue-high {
       border-left: 4px solid #f43f5e;
     }
@@ -516,27 +513,15 @@
       .brand-title {
         font-size: 15px;
       }
-
       .hero-box h1 {
         font-size: 28px;
       }
-
-      .hero-box p {
-        font-size: 15px !important;
-      }
-
       .custom-card {
         padding: 16px;
       }
-
       .section-divider {
         padding: 34px 0;
       }
-
-      .export-card {
-        padding: 28px 16px !important;
-      }
-
       .export-buttons button {
         width: 100%;
       }
@@ -549,7 +534,7 @@
   <!-- Notification Container -->
   <div class="toast-area" id="toastArea"></div>
 
-  <!-- Mobile Sidebar (Cleaned without numbers and header) -->
+  <!-- Mobile Sidebar Menu (Clean version) -->
   <div class="mobile-bg" id="mobileBg" onclick="closeMenu()"></div>
   <div class="mobile-sidebar" id="mobileSidebar">
     <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom border-secondary">
@@ -604,7 +589,7 @@
   </header>
 
   <main>
-    <!-- 1. ORIGINAL HERO SECTION -->
+    <!-- 1. HERO SECTION -->
     <section id="header" class="hero-box">
       <div class="container-xxl">
         <div class="row align-items-center gy-4">
@@ -718,7 +703,7 @@
         <div class="custom-card mb-3 p-3">
           <div class="row">
             <div class="col-md-6">
-              <input type="text" id="searchBox" class="custom-select w-100 font-mono" style="padding: 10px;" placeholder="Search dataset records..." onkeyup="searchTable()">
+              <input type="text" id="searchBox" class="form-control font-mono small" style="background:#111113; border:1px solid #27272a; color:#fff; padding:10px; border-radius:6px; width:100%;" placeholder="Search dataset records..." onkeyup="searchTable()">
             </div>
           </div>
         </div>
@@ -845,51 +830,31 @@
       </div>
     </section>
 
-    <!-- 6. VISUALIZATIONS & CUSTOM CHART -->
+    <!-- 6. DYNAMIC VISUALIZATION EXPLORER -->
     <section id="visualization" class="section-divider">
       <div class="container-xxl">
         <div class="mb-4">
-          <span class="section-tag">Multidimensional Graphics</span>
-          <h2 class="h3 fw-bold">Data Visualizations</h2>
+          <span class="section-tag">Interactive Data Science Graphics</span>
+          <h2 class="h3 fw-bold">Custom Chart Explorer</h2>
+          <p class="text-muted-custom small">Select your axes and plot type to visualize distributions, trends, and correlations.</p>
         </div>
         
-        <!-- 3 Default Charts -->
-        <div class="row g-3 mb-4">
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="custom-card h-100">
-              <h6 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="bar-chart-3" style="color:#6366f1; width:18px;"></i> Sales Histogram</h6>
-              <div class="chart-box"><canvas id="histogramChart"></canvas></div>
-            </div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="custom-card h-100">
-              <h6 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="bar-chart" style="color:#6366f1; width:18px;"></i> Regional Revenue</h6>
-              <div class="chart-box"><canvas id="barChart"></canvas></div>
-            </div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="custom-card h-100">
-              <h6 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="trending-up" style="color:#6366f1; width:18px;"></i> Live Metric Trend</h6>
-              <div class="chart-box"><canvas id="lineChart"></canvas></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- NEW: Custom Chart Explorer -->
         <div class="row">
           <div class="col-12">
             <div class="custom-card">
               <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
                 <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
-                  <i data-lucide="pie-chart" style="color:#6366f1;"></i> Build Custom Chart
+                  <i data-lucide="bar-chart-2" style="color:#6366f1;"></i> Dynamic Render
                 </h6>
                 <div class="d-flex flex-wrap gap-2">
                   <select id="chartTypeSelect" class="custom-select" onchange="renderCustomChart()">
                     <option value="bar">Bar Chart</option>
                     <option value="line">Line Chart</option>
-                    <option value="pie">Pie Chart</option>
-                    <option value="doughnut">Doughnut Chart</option>
-                    <option value="radar">Radar Chart</option>
+                    <option value="scatter">Scatter Plot</option>
+                    <option value="pie">Pie / Doughnut</option>
+                    <option value="histogram">Histogram / KDE</option>
+                    <option value="violin">Violin Distribution</option>
+                    <option value="heatmap">Correlation Matrix (Heatmap)</option>
                   </select>
                   <select id="xAxisSelect" class="custom-select" onchange="renderCustomChart()">
                     <option value="0">Record ID (X-Axis)</option>
@@ -899,13 +864,13 @@
                   </select>
                 </div>
               </div>
-              <div class="chart-box large">
-                <canvas id="customChartCanvas"></canvas>
-              </div>
+              
+              <!-- Plotly Canvas Container -->
+              <div class="chart-box" id="plotlyCanvas"></div>
+              
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
@@ -1051,35 +1016,36 @@
     </div>
   </footer>
 
-  <!-- SIMPLE BEGINNER JAVASCRIPT (USING LET) -->
+  <!-- PLOTLY & BACKEND INTEGRATION JAVASCRIPT -->
   <script>
     // Apne Render backend ka live URL yahan paste karein
     let BACKEND_URL = "https://insightai-backend.onrender.com";
 
-    // Global variable to store current dataset for custom chart
+    // Dummy Dataset (jab tak user asli file upload nahi karta)
     let currentDataObj = {
       columns: ["Record ID", "Transaction Date", "Customer Category", "Region", "Sales Amount", "Expenses", "Profit Margin", "Status"],
       records: [
         ["#TX-9021", "2026-03-01", "Enterprise", "North America", 45200, 12100, 73.2, "Verified"],
         ["#TX-9022", "2026-03-01", "SMB", "EMEA", 8450, 9100, -7.6, "Anomaly"],
-        ["#TX-9023", "2026-03-02", "Consumer", "APAC", 1400, 1400, 0, "Missing"]
+        ["#TX-9023", "2026-03-02", "Consumer", "APAC", 1400, 1400, 0, "Missing"],
+        ["#TX-9024", "2026-03-03", "Enterprise", "APAC", 32000, 9500, 65.4, "Verified"],
+        ["#TX-9025", "2026-03-04", "Consumer", "North America", 2400, 1100, 12.5, "Verified"],
+        ["#TX-9026", "2026-03-05", "SMB", "LATAM", 5500, 4100, 8.2, "Verified"]
       ]
     };
 
-    // Run icons and charts when page loads
+    // Run icons and initial charts when page loads
     window.onload = function() {
       lucide.createIcons();
-      loadCharts();
       populateDropdowns(currentDataObj.columns);
-      renderCustomChart();
+      renderCustomChart(); // Render Plotly chart on load
     };
 
-    // Open and close mobile navigation menu
+    // Mobile Menu
     function openMenu() {
       document.getElementById('mobileBg').style.display = 'block';
       document.getElementById('mobileSidebar').style.display = 'flex';
     }
-
     function closeMenu() {
       document.getElementById('mobileBg').style.display = 'none';
       document.getElementById('mobileSidebar').style.display = 'none';
@@ -1097,11 +1063,10 @@
         body.classList.add('light-mode');
         icon.textContent = '☀️';
       }
-      loadCharts();
-      renderCustomChart(); // Update custom chart colors too
+      renderCustomChart(); // Re-render plot to fix axis colors
     }
 
-    // Real File Upload to Render Backend
+    // File Upload API
     function fileUploaded(event) {
       let file = event.target.files[0];
       if (!file) return;
@@ -1120,9 +1085,7 @@
         method: 'POST',
         body: formData
       })
-      .then(function(response) {
-        return response.json();
-      })
+      .then(function(response) { return response.json(); })
       .then(function(data) {
         if (data.error) {
           showMessage("Error: " + data.error);
@@ -1139,23 +1102,17 @@
       });
     }
 
-    // Data Cleaning Request to Render Backend
+    // Data Cleaning API
     function cleanDataset(actionType) {
       showMessage("Cleaning dataset...");
-
       fetch(BACKEND_URL + '/clean', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: actionType })
       })
-      .then(function(response) {
-        return response.json();
-      })
+      .then(function(response) { return response.json(); })
       .then(function(data) {
-        if (data.error) {
-          showMessage(data.error);
-          return;
-        }
+        if (data.error) { showMessage(data.error); return; }
         updateDashboardUI(data);
         showMessage(data.message);
       })
@@ -1164,7 +1121,7 @@
       });
     }
 
-    // Download Cleaned CSV from Render Backend
+    // CSV Download API
     function downloadCleanedCSV() {
       if (BACKEND_URL.indexOf("insightai-backend.onrender.com") > -1) {
         showMessage("Backend abhi connect nahi hua hai!");
@@ -1174,9 +1131,9 @@
       showMessage("Downloading cleaned CSV file...");
     }
 
-    // Update UI Elements with new Data
+    // Update the whole UI from Python response
     function updateDashboardUI(data) {
-      currentDataObj = data; // Save globally for Custom Chart
+      currentDataObj = data; // Important: update global data for chart builder
 
       let table = document.getElementById('rawTable');
       let thead = table.querySelector('thead');
@@ -1225,17 +1182,10 @@
       document.getElementById('missingIssueText').textContent = data.missing + " empty cells detected across columns.";
       document.getElementById('dupIssueText').textContent = data.duplicates + " duplicate entries detected in dataset.";
 
-      if (chart3) {
-        chart3.data.labels = data.chart_labels;
-        chart3.data.datasets[0].data = data.chart_values;
-        chart3.update();
-      }
-
       populateDropdowns(data.columns);
       renderCustomChart();
     }
 
-    // Show notification popup
     function showMessage(text) {
       let area = document.getElementById('toastArea');
       let box = document.createElement('div');
@@ -1244,85 +1194,26 @@
 
       area.appendChild(box);
       lucide.createIcons();
-
-      setTimeout(function() {
-        box.remove();
-      }, 3000);
+      setTimeout(function() { box.remove(); }, 3500);
     }
 
-    // Search filter for Dataset Preview table
     function searchTable() {
       let input = document.getElementById('searchBox').value.toLowerCase();
       let table = document.getElementById('rawTable');
       let rows = table.getElementsByTagName('tr');
-
       for (let i = 1; i < rows.length; i++) {
         let rowText = rows[i].textContent.toLowerCase();
-        if (rowText.indexOf(input) > -1) {
-          rows[i].style.display = '';
-        } else {
-          rows[i].style.display = 'none';
-        }
+        rows[i].style.display = rowText.indexOf(input) > -1 ? '' : 'none';
       }
     }
 
-    // =============== CHARTS SECTION =============== //
-    let chart1, chart2, chart3, customChartInstance;
 
-    function loadCharts() {
-      let isLight = document.body.classList.contains('light-mode');
-      let labelColor = isLight ? '#475569' : '#a1a1aa';
-      let lineColor = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
-
-      let chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: labelColor, font: { size: 11 } }, grid: { color: lineColor } },
-          y: { ticks: { color: labelColor, font: { size: 11 } }, grid: { color: lineColor } }
-        }
-      };
-
-      if (chart1) chart1.destroy();
-      if (chart2) chart2.destroy();
-      if (chart3) chart3.destroy();
-
-      // Default Chart 1
-      let ctx1 = document.getElementById('histogramChart');
-      chart1 = new Chart(ctx1, {
-        type: 'bar',
-        data: {
-          labels: ['$0-20k', '$20-40k', '$40-60k', '$60-80k', '$80k+'],
-          datasets: [{ data: [120, 450, 310, 180, 40], backgroundColor: '#6366f1', borderRadius: 4 }]
-        },
-        options: chartOptions
-      });
-
-      // Default Chart 2
-      let ctx2 = document.getElementById('barChart');
-      chart2 = new Chart(ctx2, {
-        type: 'bar',
-        data: {
-          labels: ['NA', 'EMEA', 'APAC', 'LATAM'],
-          datasets: [{ data: [450, 320, 180, 210], backgroundColor: ['#6366f1', '#a855f7', '#ec4899', '#f59e0b'], borderRadius: 4 }]
-        },
-        options: chartOptions
-      });
-
-      // Default Chart 3
-      let ctx3 = document.getElementById('lineChart');
-      chart3 = new Chart(ctx3, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{ data: [22, 34, 27, 45, 52, 68], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.3 }]
-        },
-        options: chartOptions
-      });
-    }
-
-    // Populate Custom Chart Dropdowns dynamically
+    /* =========================================================================
+       PRO-LEVEL VISUALIZATIONS USING PLOTLY.JS 
+       (Handles Bar, Line, Scatter, Pie, Histogram, Violin, & Heatmap Matrix)
+       ========================================================================= */
+       
+    // Populate the X and Y dropdowns
     function populateDropdowns(columns) {
       let xSelect = document.getElementById('xAxisSelect');
       let ySelect = document.getElementById('yAxisSelect');
@@ -1335,79 +1226,178 @@
         ySelect.innerHTML += `<option value="${i}">${columns[i]} (Y)</option>`;
       }
       
-      // Auto-select a different column for Y if possible
       if (columns.length > 1) {
-        let numColIndex = columns.findIndex(col => col.toLowerCase().includes('amount') || col.toLowerCase().includes('price') || col.toLowerCase().includes('sale'));
+        // Try to auto-select a numerical column for Y-axis (Sales, Expenses, etc)
+        let numColIndex = columns.findIndex(col => col.toLowerCase().match(/amount|price|sale|expense|margin/));
         ySelect.selectedIndex = numColIndex > -1 ? numColIndex : 1;
       }
     }
 
-    // Render Custom User Chart
+    // Helper: Calculate Pearson Correlation (Math for Heatmap)
+    function getPearsonCorrelation(x, y) {
+      let n = x.length;
+      let sum_x = 0, sum_y = 0, sum_xy = 0, sum_x2 = 0, sum_y2 = 0;
+      for (let i = 0; i < n; i++) {
+        sum_x += x[i]; sum_y += y[i];
+        sum_xy += x[i] * y[i];
+        sum_x2 += x[i] * x[i]; sum_y2 += y[i] * y[i];
+      }
+      let step1 = (n * sum_xy) - (sum_x * sum_y);
+      let step2 = (n * sum_x2) - (sum_x * sum_x);
+      let step3 = (n * sum_y2) - (sum_y * sum_y);
+      let step4 = Math.sqrt(step2 * step3);
+      if (step4 === 0) return 0;
+      return step1 / step4;
+    }
+
+    // Render the selected Chart using Plotly
     function renderCustomChart() {
       if (!currentDataObj || currentDataObj.records.length === 0) return;
 
       let type = document.getElementById('chartTypeSelect').value;
-      let xColIdx = document.getElementById('xAxisSelect').value;
-      let yColIdx = document.getElementById('yAxisSelect').value;
+      let xColIdx = parseInt(document.getElementById('xAxisSelect').value);
+      let yColIdx = parseInt(document.getElementById('yAxisSelect').value);
+      let colNames = currentDataObj.columns;
 
-      let labels = [];
-      let values = [];
+      let xLabels = [];
+      let yValues = [];
 
-      // Take first 15 records for preview to avoid clutter
-      let limit = Math.min(currentDataObj.records.length, 15);
+      // We limit to 500 rows on frontend so the browser doesn't freeze on huge datasets
+      let limit = Math.min(currentDataObj.records.length, 500); 
       
       for (let i = 0; i < limit; i++) {
-        labels.push(currentDataObj.records[i][xColIdx]);
+        xLabels.push(currentDataObj.records[i][xColIdx]);
         
-        // Clean numeric values (remove $ or commas) and parse to float
-        let rawVal = String(currentDataObj.records[i][yColIdx]);
-        let cleanVal = parseFloat(rawVal.replace(/[^0-9.-]+/g, ""));
-        values.push(isNaN(cleanVal) ? 0 : cleanVal);
+        let rawY = String(currentDataObj.records[i][yColIdx]);
+        let cleanY = parseFloat(rawY.replace(/[^0-9.-]+/g, ""));
+        yValues.push(isNaN(cleanY) ? 0 : cleanY);
       }
 
+      // Theme Colors
       let isLight = document.body.classList.contains('light-mode');
-      let labelColor = isLight ? '#475569' : '#a1a1aa';
-      let lineColor = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
+      let textColor = isLight ? '#0f172a' : '#fafafa';
+      let gridColor = isLight ? '#e2e8f0' : '#27272a';
+      let paperBg = 'rgba(0,0,0,0)'; 
 
-      if (customChartInstance) {
-        customChartInstance.destroy();
+      // Master Layout for Plotly
+      let layout = {
+        paper_bgcolor: paperBg,
+        plot_bgcolor: paperBg,
+        font: { family: 'Inter', color: textColor },
+        margin: { t: 40, l: 50, r: 20, b: 50 },
+        xaxis: { title: colNames[xColIdx], gridcolor: gridColor, zerolinecolor: gridColor },
+        yaxis: { title: colNames[yColIdx], gridcolor: gridColor, zerolinecolor: gridColor }
+      };
+
+      let plotData = [];
+      let customColors = ['#6366f1', '#a855f7', '#ec4899', '#10b981', '#f59e0b', '#3b82f6', '#ef4444', '#14b8a6'];
+
+      if (type === 'bar' || type === 'scatter') {
+        plotData.push({
+          x: xLabels,
+          y: yValues,
+          type: type,
+          mode: type === 'scatter' ? 'markers' : 'lines',
+          marker: { color: '#6366f1', size: 8 }
+        });
+      } 
+      else if (type === 'line') {
+        plotData.push({
+          x: xLabels,
+          y: yValues,
+          type: 'scatter',
+          mode: 'lines+markers',
+          line: { color: '#6366f1', width: 3 },
+          marker: { color: '#a855f7', size: 6 }
+        });
       }
-
-      let ctx = document.getElementById('customChartCanvas');
-      
-      let isPieOrDoughnut = (type === 'pie' || type === 'doughnut');
-      let colors = ['#6366f1', '#a855f7', '#ec4899', '#10b981', '#f59e0b', '#3b82f6', '#ef4444', '#14b8a6', '#8b5cf6', '#f97316'];
-
-      customChartInstance = new Chart(ctx, {
-        type: type,
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Custom Dataset',
-            data: values,
-            backgroundColor: isPieOrDoughnut ? colors : '#6366f1',
-            borderColor: type === 'line' || type === 'radar' ? '#6366f1' : 'transparent',
-            borderWidth: type === 'line' || type === 'radar' ? 2 : 0,
-            fill: type === 'radar' ? true : false,
-            tension: 0.3,
-            borderRadius: type === 'bar' ? 4 : 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { 
-            legend: { 
-              display: isPieOrDoughnut || type === 'radar',
-              labels: { color: labelColor }
-            } 
-          },
-          scales: isPieOrDoughnut || type === 'radar' ? {} : {
-            x: { ticks: { color: labelColor, font: { size: 11 } }, grid: { color: lineColor } },
-            y: { ticks: { color: labelColor, font: { size: 11 } }, grid: { color: lineColor } }
+      else if (type === 'pie' || type === 'doughnut') {
+        plotData.push({
+          labels: xLabels,
+          values: yValues,
+          type: 'pie',
+          hole: type === 'doughnut' ? 0.5 : 0,
+          marker: { colors: customColors }
+        });
+        layout.xaxis.visible = false;
+        layout.yaxis.visible = false;
+      } 
+      else if (type === 'histogram') {
+        plotData.push({
+          x: yValues,
+          type: 'histogram',
+          marker: { color: '#10b981' },
+          opacity: 0.75
+        });
+        layout.xaxis.title = colNames[yColIdx] + ' (Distribution)';
+        layout.yaxis.title = "Frequency Count";
+      } 
+      else if (type === 'violin') {
+        plotData.push({
+          y: yValues,
+          x: xLabels,
+          type: 'violin',
+          box: { visible: true },
+          meanline: { visible: true },
+          marker: { color: '#a855f7' }
+        });
+      } 
+      else if (type === 'heatmap') {
+        // Automatic Pearson Correlation Matrix
+        let numIdxs = [];
+        let numNames = [];
+        
+        // Find which columns actually contain numbers
+        for(let c = 0; c < colNames.length; c++) {
+          let testVal = currentDataObj.records[0][c];
+          let parsed = parseFloat(String(testVal).replace(/[^0-9.-]+/g, ""));
+          if(!isNaN(parsed)) {
+            numIdxs.push(c);
+            numNames.push(colNames[c]);
           }
         }
-      });
+
+        // Build Z-Matrix (Correlation Scores)
+        let zMatrix = [];
+        for(let i=0; i<numIdxs.length; i++) {
+          let rowArray = [];
+          for(let j=0; j<numIdxs.length; j++) {
+            if(i === j) { rowArray.push(1); continue; }
+            
+            let arrX = [], arrY = [];
+            for(let r=0; r<limit; r++) {
+              let vx = parseFloat(String(currentDataObj.records[r][numIdxs[i]]).replace(/[^0-9.-]+/g, ""));
+              let vy = parseFloat(String(currentDataObj.records[r][numIdxs[j]]).replace(/[^0-9.-]+/g, ""));
+              arrX.push(isNaN(vx)?0:vx);
+              arrY.push(isNaN(vy)?0:vy);
+            }
+            rowArray.push(getPearsonCorrelation(arrX, arrY));
+          }
+          zMatrix.push(rowArray);
+        }
+
+        plotData.push({
+          z: zMatrix,
+          x: numNames,
+          y: numNames,
+          type: 'heatmap',
+          colorscale: 'RdBu',
+          zmin: -1,
+          zmax: 1
+        });
+
+        layout.xaxis.title = "Numeric Columns";
+        layout.yaxis.title = "Numeric Columns";
+        
+        if (numIdxs.length < 2) {
+          showMessage("Correlation matrix requires at least 2 numerical columns!");
+        } else {
+          showMessage("Correlation Matrix auto-generated for all numeric fields.");
+        }
+      }
+
+      // Render it to the div!
+      Plotly.newPlot('plotlyCanvas', plotData, layout, {responsive: true, displayModeBar: false});
     }
   </script>
 </body>

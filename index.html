@@ -82,9 +82,10 @@
       background-color: #18181b;
       border: 1px solid #27272a;
       border-radius: 14px;
-      padding: 24px;
+      padding: 22px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
       transition: 0.2s;
+      word-wrap: break-word;
     }
 
     .custom-card:hover {
@@ -109,6 +110,7 @@
       font-size: 14px;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       text-decoration: none;
       cursor: pointer;
@@ -131,6 +133,7 @@
       font-size: 14px;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       text-decoration: none;
       cursor: pointer;
@@ -152,8 +155,8 @@
     }
 
     .btn-round {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 1px solid #27272a;
       background-color: #18181b;
@@ -162,6 +165,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     body.light-mode .btn-round {
@@ -175,23 +179,30 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background-color: rgba(24, 24, 27, 0.92);
+      background-color: rgba(24, 24, 27, 0.95);
       border-bottom: 1px solid #27272a;
-      padding: 14px 20px;
+      padding: 12px 16px;
     }
 
     body.light-mode .top-navbar {
-      background-color: rgba(255, 255, 255, 0.92);
+      background-color: rgba(255, 255, 255, 0.95);
       border-bottom: 1px solid #e2e8f0;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 18px;
+      color: #6366f1;
     }
 
     .nav-item-link {
       color: #a1a1aa;
       font-weight: 500;
       font-size: 14px;
-      padding: 6px 12px;
+      padding: 8px 12px;
       border-radius: 8px;
       text-decoration: none;
+      display: block;
     }
 
     .nav-item-link:hover {
@@ -211,7 +222,7 @@
     .mobile-bg {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.65);
       z-index: 200;
       display: none;
     }
@@ -219,13 +230,15 @@
     .mobile-sidebar {
       position: fixed;
       top: 0; left: 0; bottom: 0;
-      width: 270px;
+      width: 260px;
+      max-width: 80vw;
       background-color: #18181b;
       border-right: 1px solid #27272a;
       z-index: 300;
       padding: 20px;
       display: none;
       flex-direction: column;
+      overflow-y: auto;
     }
 
     body.light-mode .mobile-sidebar {
@@ -235,7 +248,7 @@
 
     /* Hero Section */
     .hero-box {
-      padding: 60px 20px;
+      padding: 55px 16px;
       background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 50%), #111113;
       border-bottom: 1px solid #27272a;
     }
@@ -249,10 +262,11 @@
       background-color: #18181b;
       border: 1px solid #27272a;
       border-radius: 14px;
-      padding: 18px;
+      padding: 16px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      height: 100%;
     }
 
     body.light-mode .stat-box {
@@ -261,21 +275,29 @@
     }
 
     .stat-icon {
-      width: 46px;
-      height: 46px;
+      width: 42px;
+      height: 42px;
       border-radius: 10px;
       background-color: rgba(99, 102, 241, 0.15);
       color: #6366f1;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
     }
 
     /* Upload Area */
     .drop-area {
       border: 2px dashed #3f3f46;
-      border-radius: 20px;
-      padding: 45px 20px;
+      border-radius: 18px;
+      padding: 36px 16px;
       text-align: center;
       background-color: #111113;
       cursor: pointer;
@@ -311,6 +333,7 @@
       border: 1px solid #27272a;
       border-radius: 14px;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       background-color: #18181b;
     }
 
@@ -328,7 +351,7 @@
     .data-table th {
       background-color: #111113;
       color: #a1a1aa;
-      padding: 14px 16px;
+      padding: 12px 14px;
       text-align: left;
       border-bottom: 1px solid #27272a;
       white-space: nowrap;
@@ -341,7 +364,7 @@
     }
 
     .data-table td {
-      padding: 12px 16px;
+      padding: 11px 14px;
       border-bottom: 1px solid #27272a;
       white-space: nowrap;
     }
@@ -362,6 +385,7 @@
       align-items: center;
       justify-content: space-between;
       font-weight: 500;
+      font-size: 14px;
       cursor: pointer;
       transition: 0.2s;
     }
@@ -392,6 +416,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-weight: 600;
       text-transform: uppercase;
+      white-space: nowrap;
     }
     .tag-high {
       background-color: rgba(244, 63, 94, 0.15);
@@ -414,17 +439,73 @@
     /* Toast Notification */
     .toast-area {
       position: fixed;
-      bottom: 25px;
-      right: 25px;
+      bottom: 16px;
+      right: 16px;
+      left: 16px;
+      max-width: 340px;
+      margin-left: auto;
       z-index: 1000;
     }
 
     .section-divider {
-      padding: 55px 0;
+      padding: 45px 0;
       border-bottom: 1px solid #27272a;
     }
     body.light-mode .section-divider {
       border-bottom: 1px solid #e2e8f0;
+    }
+
+    /* MOBILE SCREEN FIXES */
+    @media (max-width: 576px) {
+      .brand-title {
+        font-size: 15px;
+      }
+
+      .hero-box {
+        padding: 32px 12px;
+      }
+
+      .hero-box h1 {
+        font-size: 26px;
+      }
+
+      .hero-box p {
+        font-size: 15px !important;
+      }
+
+      .hero-buttons a {
+        width: 100%;
+      }
+
+      .stat-box {
+        padding: 12px;
+        gap: 10px;
+      }
+
+      .stat-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .stat-number {
+        font-size: 16px;
+      }
+
+      .custom-card {
+        padding: 16px;
+      }
+
+      .section-divider {
+        padding: 34px 0;
+      }
+
+      .export-card {
+        padding: 28px 16px !important;
+      }
+
+      .export-buttons button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -441,7 +522,7 @@
       <span class="fw-bold fs-5">AI Data Engine</span>
       <button class="btn-round" onclick="closeMenu()"><i data-lucide="x"></i></button>
     </div>
-    <div class="d-flex flex-column gap-2">
+    <div class="d-flex flex-column gap-1">
       <a href="#header" class="nav-item-link" onclick="closeMenu()">1. Header</a>
       <a href="#upload" class="nav-item-link" onclick="closeMenu()">2. Upload Dataset</a>
       <a href="#preview" class="nav-item-link" onclick="closeMenu()">3. Dataset Preview</a>
@@ -459,12 +540,12 @@
   <header class="top-navbar">
     <div class="container-xxl d-flex align-items-center justify-content-between">
       <div class="d-flex align-items-center gap-2">
-        <button class="btn-round d-md-none" onclick="openMenu()"><i data-lucide="menu"></i></button>
+        <button class="btn-round d-md-none" onclick="openMenu()"><i data-lucide="menu" style="width:18px;"></i></button>
         <a href="#" class="d-flex align-items-center gap-2 text-decoration-none">
-          <div class="p-2 rounded bg-primary bg-opacity-10 text-primary">
-            <i data-lucide="cpu" style="width: 22px; height: 22px;"></i>
+          <div class="p-2 rounded bg-primary bg-opacity-10 text-primary d-none d-sm-flex">
+            <i data-lucide="cpu" style="width: 20px; height: 20px;"></i>
           </div>
-          <span class="fw-bold fs-5 text-primary">AI Data Analyzer</span>
+          <span class="brand-title">AI Data Analyzer</span>
         </a>
       </div>
 
@@ -499,47 +580,47 @@
             <span class="section-tag">Enterprise Intelligence v4.8</span>
             <h1 class="display-5 fw-bold mb-3">Automated Data Exploration & <span class="gradient-text">AI Diagnostics</span></h1>
             <p class="fs-5 text-muted-custom mb-4">Upload raw datasets for automated statistical profiling, missing data hygiene, anomaly detection, multidimensional visualizations, and executive recommendations.</p>
-            <div class="d-flex flex-wrap gap-3">
+            <div class="d-flex flex-wrap gap-2 hero-buttons">
               <a href="#upload" class="btn-purple"><i data-lucide="upload-cloud" style="width:18px;"></i><span>Load Dataset</span></a>
               <a href="#eda" class="btn-outline-simple"><i data-lucide="bar-chart-2" style="width:18px;"></i><span>View Full EDA</span></a>
             </div>
           </div>
 
           <div class="col-lg-5">
-            <div class="row g-3">
+            <div class="row g-2 g-sm-3">
               <div class="col-6">
                 <div class="stat-box">
-                  <div class="stat-icon"><i data-lucide="database"></i></div>
+                  <div class="stat-icon"><i data-lucide="database" style="width:18px;"></i></div>
                   <div>
-                    <div class="font-mono fs-4 fw-bold">124,500</div>
-                    <div class="text-muted-custom small">Total Records</div>
+                    <div class="stat-number">124,500</div>
+                    <div class="text-muted-custom small">Records</div>
                   </div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="stat-box">
-                  <div class="stat-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);"><i data-lucide="check-circle-2"></i></div>
+                  <div class="stat-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);"><i data-lucide="check-circle-2" style="width:18px;"></i></div>
                   <div>
-                    <div class="font-mono fs-4 fw-bold">94.2%</div>
-                    <div class="text-muted-custom small">Health Score</div>
+                    <div class="stat-number">94.2%</div>
+                    <div class="text-muted-custom small">Health</div>
                   </div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="stat-box">
-                  <div class="stat-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);"><i data-lucide="alert-triangle"></i></div>
+                  <div class="stat-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);"><i data-lucide="alert-triangle" style="width:18px;"></i></div>
                   <div>
-                    <div class="font-mono fs-4 fw-bold">18</div>
-                    <div class="text-muted-custom small">Issues Flagged</div>
+                    <div class="stat-number">18</div>
+                    <div class="text-muted-custom small">Issues</div>
                   </div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="stat-box">
-                  <div class="stat-icon" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);"><i data-lucide="zap"></i></div>
+                  <div class="stat-icon" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);"><i data-lucide="zap" style="width:18px;"></i></div>
                   <div>
-                    <div class="font-mono fs-4 fw-bold">99.4%</div>
-                    <div class="text-muted-custom small">AI Accuracy</div>
+                    <div class="stat-number">99.4%</div>
+                    <div class="text-muted-custom small">Accuracy</div>
                   </div>
                 </div>
               </div>
@@ -555,29 +636,29 @@
         <div class="text-center mb-4">
           <span class="section-tag">Ingestion Pipeline</span>
           <h2 class="h3 fw-bold">Upload Your Dataset</h2>
-          <p class="text-muted-custom">Drag & drop your file or choose from local storage for real-time analysis</p>
+          <p class="text-muted-custom small">Drag & drop your file or choose from local storage for real-time analysis</p>
         </div>
 
         <div class="row justify-content-center">
           <div class="col-lg-8">
-            <div class="drop-area mb-4" onclick="document.getElementById('fileInput').click()">
+            <div class="drop-area mb-3" onclick="document.getElementById('fileInput').click()">
               <input type="file" id="fileInput" class="d-none" accept=".csv, .xlsx, .xls" onchange="fileUploaded(event)">
-              <div class="mb-3"><i data-lucide="file-up" style="width: 46px; height: 46px; color: #6366f1;"></i></div>
-              <h5 class="fw-bold mb-1">Click to upload or drag file here</h5>
+              <div class="mb-2"><i data-lucide="file-up" style="width: 40px; height: 40px; color: #6366f1;"></i></div>
+              <h5 class="fw-bold mb-1">Tap to upload dataset</h5>
               <p class="text-muted-custom small mb-3">Supports CSV, XLSX, XLS files up to 100MB</p>
               <button class="btn-purple" type="button">Select File</button>
             </div>
 
             <div class="custom-card">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <div class="d-flex align-items-center gap-3">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <div class="d-flex align-items-center gap-2">
                   <div class="p-2 rounded bg-primary bg-opacity-10 text-primary"><i data-lucide="file-spreadsheet"></i></div>
                   <div>
-                    <div class="fw-semibold font-mono" id="fileNameText">sales_q4_telemetry_raw.csv</div>
-                    <div class="text-muted-custom small" id="fileMetaText">2.4 MB • Updated 2 mins ago</div>
+                    <div class="fw-semibold font-mono small" id="fileNameText">sales_q4_telemetry_raw.csv</div>
+                    <div class="text-muted-custom small" id="fileMetaText">2.4 MB • Ready</div>
                   </div>
                 </div>
-                <span class="badge bg-success bg-opacity-10 text-success font-mono px-3 py-2 rounded-pill">Loaded & Parsed</span>
+                <span class="badge bg-success bg-opacity-10 text-success font-mono px-3 py-2 rounded-pill">Loaded</span>
               </div>
               <div class="progress-track">
                 <div class="progress-fill" id="progressBar"></div>
@@ -591,18 +672,18 @@
     <!-- 3. DATASET PREVIEW -->
     <section id="preview" class="section-divider">
       <div class="container-xxl">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
           <div>
             <span class="section-tag">Raw Ingestion View</span>
             <h2 class="h3 fw-bold mb-0">Dataset Preview</h2>
           </div>
-          <div class="d-flex gap-2">
-            <span class="px-3 py-2 rounded border border-secondary font-mono small"><strong style="color:#6366f1;">Total Rows:</strong> 1,250</span>
-            <span class="px-3 py-2 rounded border border-secondary font-mono small"><strong style="color:#6366f1;">Total Columns:</strong> 8</span>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded border border-secondary font-mono small"><strong style="color:#6366f1;">Rows:</strong> <span id="topRowBadge">1,250</span></span>
+            <span class="px-3 py-1 rounded border border-secondary font-mono small"><strong style="color:#6366f1;">Cols:</strong> <span id="topColBadge">8</span></span>
           </div>
         </div>
 
-        <div class="custom-card mb-4 p-3">
+        <div class="custom-card mb-3 p-3">
           <div class="row">
             <div class="col-md-6">
               <input type="text" id="searchBox" class="form-control font-mono small" placeholder="Search dataset records..." onkeyup="searchTable()">
@@ -669,32 +750,32 @@
           <h2 class="h3 fw-bold">Exploratory Data Analysis (EDA)</h2>
         </div>
         <div class="row g-3">
-          <div class="col-md-4 col-lg-3">
-            <div class="custom-card">
+          <div class="col-6 col-lg-3">
+            <div class="custom-card h-100">
               <div class="text-muted-custom small fw-semibold">Dataset Shape</div>
-              <div class="font-mono fs-4 fw-bold mt-1">1,250 × 8</div>
-              <div class="text-muted-custom small">Rows × Columns</div>
+              <div class="font-mono fs-5 fw-bold mt-1">1,250 × 8</div>
+              <div class="text-muted-custom small">Rows × Cols</div>
             </div>
           </div>
-          <div class="col-md-4 col-lg-3">
-            <div class="custom-card">
-              <div class="text-muted-custom small fw-semibold">Columns Analyzed</div>
-              <div class="font-mono fs-4 fw-bold mt-1">8 Active</div>
-              <div class="text-muted-custom small">5 Num, 2 Cat, 1 Date</div>
+          <div class="col-6 col-lg-3">
+            <div class="custom-card h-100">
+              <div class="text-muted-custom small fw-semibold">Columns</div>
+              <div class="font-mono fs-5 fw-bold mt-1">8 Active</div>
+              <div class="text-muted-custom small">5 Num, 3 Cat</div>
             </div>
           </div>
-          <div class="col-md-4 col-lg-3">
-            <div class="custom-card">
+          <div class="col-6 col-lg-3">
+            <div class="custom-card h-100">
               <div class="text-muted-custom small fw-semibold">Data Types</div>
-              <div class="font-mono fs-4 fw-bold mt-1">Mixed</div>
-              <div class="text-muted-custom small">float64, int64, object</div>
+              <div class="font-mono fs-5 fw-bold mt-1">Mixed</div>
+              <div class="text-muted-custom small">float, int, text</div>
             </div>
           </div>
-          <div class="col-md-4 col-lg-3">
-            <div class="custom-card">
+          <div class="col-6 col-lg-3">
+            <div class="custom-card h-100">
               <div class="text-muted-custom small fw-semibold">Missing Values</div>
-              <div class="font-mono fs-4 fw-bold mt-1 text-warning">42 Cells</div>
-              <div class="text-muted-custom small">Requires Imputation</div>
+              <div class="font-mono fs-5 fw-bold mt-1 text-warning">42 Cells</div>
+              <div class="text-muted-custom small">Needs Cleaning</div>
             </div>
           </div>
         </div>
@@ -707,23 +788,23 @@
         <div class="mb-4">
           <span class="section-tag">Automated Hygiene</span>
           <h2 class="h3 fw-bold">Data Cleaning Suite</h2>
-          <p class="text-muted-custom">Trigger instant data transformations and hygiene algorithms</p>
+          <p class="text-muted-custom small">Trigger instant data transformations and hygiene algorithms</p>
         </div>
         <div class="row g-3">
-          <div class="col-md-6 col-lg-4">
-            <button class="clean-action-btn" onclick="showMessage('Removed 42 rows with missing fields')">
+          <div class="col-12 col-md-4">
+            <button class="clean-action-btn" onclick="cleanDataset('drop_missing')">
               <span>Remove Missing Values</span>
               <i data-lucide="trash-2" style="width: 18px;"></i>
             </button>
           </div>
-          <div class="col-md-6 col-lg-4">
-            <button class="clean-action-btn" onclick="showMessage('Imputed 42 values using median strategy')">
+          <div class="col-12 col-md-4">
+            <button class="clean-action-btn" onclick="cleanDataset('fill_missing')">
               <span>Fill Missing Values (Impute)</span>
               <i data-lucide="sparkles" style="width: 18px;"></i>
             </button>
           </div>
-          <div class="col-md-6 col-lg-4">
-            <button class="clean-action-btn" onclick="showMessage('Pruned 14 duplicate record rows')">
+          <div class="col-12 col-md-4">
+            <button class="clean-action-btn" onclick="cleanDataset('drop_duplicates')">
               <span>Remove Duplicate Rows</span>
               <i data-lucide="copy-x" style="width: 18px;"></i>
             </button>
@@ -739,23 +820,23 @@
           <span class="section-tag">Multidimensional Graphics</span>
           <h2 class="h3 fw-bold">Data Visualizations</h2>
         </div>
-        <div class="row g-4">
-          <div class="col-md-6 col-lg-4">
+        <div class="row g-3">
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="custom-card h-100">
               <h6 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="bar-chart-3" style="color:#6366f1;"></i> Sales Histogram</h6>
-              <div style="height: 220px;"><canvas id="histogramChart"></canvas></div>
+              <div style="height: 210px;"><canvas id="histogramChart"></canvas></div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="custom-card h-100">
               <h6 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="bar-chart" style="color:#6366f1;"></i> Regional Revenue (Bar)</h6>
-              <div style="height: 220px;"><canvas id="barChart"></canvas></div>
+              <div style="height: 210px;"><canvas id="barChart"></canvas></div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="custom-card h-100">
-              <h6 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="trending-up" style="color:#6366f1;"></i> Sales Trend (Line)</h6>
-              <div style="height: 220px;"><canvas id="lineChart"></canvas></div>
+              <h6 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="trending-up" style="color:#6366f1;"></i> Live Metric Trend (Line)</h6>
+              <div style="height: 210px;"><canvas id="lineChart"></canvas></div>
             </div>
           </div>
         </div>
@@ -770,24 +851,24 @@
           <h2 class="h3 fw-bold">Detected Anomalies & Data Issues</h2>
         </div>
         <div class="row g-3">
-          <div class="col-md-6 col-lg-3">
+          <div class="col-12 col-md-6 col-lg-3">
             <div class="custom-card issue-high h-100">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="tag-badge tag-high">High Severity</span>
                 <i data-lucide="alert-circle" class="text-danger" style="width: 18px;"></i>
               </div>
               <h6 class="fw-bold mb-1">Missing Values</h6>
-              <p class="text-muted-custom small mb-0">42 empty cells in critical numerical fields ('Sales Amount').</p>
+              <p class="text-muted-custom small mb-0" id="missingIssueText">42 empty cells in critical numerical fields.</p>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
+          <div class="col-12 col-md-6 col-lg-3">
             <div class="custom-card issue-medium h-100">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="tag-badge tag-medium">Medium</span>
                 <i data-lucide="copy" class="text-warning" style="width: 18px;"></i>
               </div>
               <h6 class="fw-bold mb-1">Duplicate Rows</h6>
-              <p class="text-muted-custom small mb-0">14 duplicate transaction entries detected in raw batch.</p>
+              <p class="text-muted-custom small mb-0" id="dupIssueText">14 duplicate transaction entries detected in raw batch.</p>
             </div>
           </div>
         </div>
@@ -801,8 +882,8 @@
           <span class="section-tag">LLM Intelligence Analysis</span>
           <h2 class="h3 fw-bold">Automated AI Executive Insights</h2>
         </div>
-        <div class="row g-4">
-          <div class="col-md-6">
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
             <div class="custom-card h-100">
               <div class="d-flex align-items-center gap-3 mb-3">
                 <div class="p-2 rounded bg-primary bg-opacity-10 text-primary"><i data-lucide="sparkles"></i></div>
@@ -811,10 +892,10 @@
                   <span class="text-muted-custom small font-mono">Confidence: 98.4%</span>
                 </div>
               </div>
-              <p class="text-muted-custom mb-0">Enterprise accounts generate 68% of net profit margins despite representing only 24% of overall order volume. Increasing enterprise acquisition by 10% will yield an estimated $140K gross uplift.</p>
+              <p class="text-muted-custom small mb-0">Enterprise accounts generate 68% of net profit margins despite representing only 24% of overall order volume. Increasing enterprise acquisition by 10% will yield an estimated $140K gross uplift.</p>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-12 col-md-6">
             <div class="custom-card h-100">
               <div class="d-flex align-items-center gap-3 mb-3">
                 <div class="p-2 rounded bg-warning bg-opacity-10 text-warning"><i data-lucide="alert-octagon"></i></div>
@@ -823,7 +904,7 @@
                   <span class="text-muted-custom small font-mono">Confidence: 94.1%</span>
                 </div>
               </div>
-              <p class="text-muted-custom mb-0">Operating expenses in the SMB tier have outpaced revenue growth by 14% over the last 60 days. High customer acquisition costs are reducing net contribution margin to negative 7.6%.</p>
+              <p class="text-muted-custom small mb-0">Operating expenses in the SMB tier have outpaced revenue growth by 14% over the last 60 days. High customer acquisition costs are reducing net contribution margin to negative 7.6%.</p>
             </div>
           </div>
         </div>
@@ -837,12 +918,12 @@
           <span class="section-tag">Actionable Guidance</span>
           <h2 class="h3 fw-bold">Prescriptive Solutions & Action Items</h2>
         </div>
-        <div class="row g-4">
-          <div class="col-lg-6">
+        <div class="row g-3">
+          <div class="col-12 col-lg-6">
             <div class="custom-card h-100">
-              <div class="d-flex justify-content-between align-items-start mb-3">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
                 <div>
-                  <h5 class="fw-bold mb-1">Restructure SMB Pricing & Tier Support</h5>
+                  <h5 class="fw-bold mb-1 fs-6">Restructure SMB Pricing & Tier Support</h5>
                   <div class="text-muted-custom small">Target: Operational Expense Reduction</div>
                 </div>
                 <span class="tag-badge tag-high">High Priority</span>
@@ -856,11 +937,11 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-12 col-lg-6">
             <div class="custom-card h-100">
-              <div class="d-flex justify-content-between align-items-start mb-3">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
                 <div>
-                  <h5 class="fw-bold mb-1">Implement Automated Ingestion Validation</h5>
+                  <h5 class="fw-bold mb-1 fs-6">Implement Automated Ingestion Validation</h5>
                   <div class="text-muted-custom small">Target: Data Quality Hygiene</div>
                 </div>
                 <span class="tag-badge tag-medium">Medium Priority</span>
@@ -880,15 +961,15 @@
     <!-- 10. EXPORT REPORT -->
     <section id="download" class="py-5">
       <div class="container-xxl">
-        <div class="custom-card p-5 text-center mx-auto" style="max-width: 750px;">
+        <div class="custom-card export-card p-5 text-center mx-auto" style="max-width: 750px;">
           <div class="p-3 rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex mb-3">
-            <i data-lucide="file-check-2" style="width: 34px; height: 34px;"></i>
+            <i data-lucide="file-check-2" style="width: 32px; height: 32px;"></i>
           </div>
           <h2 class="h3 fw-bold mb-2">Export Executive Report</h2>
-          <p class="text-muted-custom mb-4">Generate publication-ready PDF summaries, formatted Excel spreadsheets, or print diagnostic evidence.</p>
-          <div class="d-flex flex-wrap justify-content-center gap-3">
+          <p class="text-muted-custom small mb-4">Generate publication-ready PDF summaries, download cleaned CSV datasets, or print diagnostic evidence.</p>
+          <div class="d-flex flex-wrap justify-content-center gap-2 export-buttons">
             <button class="btn-purple" onclick="showMessage('Generating PDF Analysis Executive Deck...')"><i data-lucide="file-text" style="width:18px;"></i><span>Download PDF</span></button>
-            <button class="btn-outline-simple" onclick="showMessage('Preparing Excel Workbook (.xlsx)...')"><i data-lucide="sheet" style="width:18px;"></i><span>Download Excel</span></button>
+            <button class="btn-outline-simple" onclick="downloadCleanedCSV()"><i data-lucide="sheet" style="width:18px;"></i><span>Download Cleaned CSV</span></button>
             <button class="btn-outline-simple" onclick="window.print()"><i data-lucide="printer" style="width:18px;"></i><span>Print UI</span></button>
           </div>
         </div>
@@ -897,15 +978,18 @@
   </main>
 
   <!-- Footer -->
-  <footer class="py-4 border-top border-secondary">
+  <footer class="py-4 border-top border-secondary text-center text-sm-start">
     <div class="container-xxl d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
       <div class="text-muted-custom small">© 2026 AI Data Analyzer Engine • Production Analytics UI v4.8</div>
       <div class="d-flex gap-3 font-mono small text-muted-custom"><span>Latency: 14ms</span><span>Build: Production</span></div>
     </div>
   </footer>
 
-  <!-- SIMPLE BEGINNER JAVASCRIPT -->
+  <!-- SIMPLE BEGINNER JAVASCRIPT (USING LET) -->
   <script>
+    // Apne Render backend ka live URL yahan paste karein
+    let BACKEND_URL = "https://insightai-backend.onrender.com";
+
     // Run icons and charts when page loads
     window.onload = function() {
       lucide.createIcons();
@@ -935,39 +1019,148 @@
         body.classList.add('light-mode');
         icon.textContent = '☀️';
       }
-      loadCharts(); // Reload charts to match theme text color
+      loadCharts();
     }
 
-    // Handle file upload
+    // Real File Upload to Render Backend
     function fileUploaded(event) {
       let file = event.target.files[0];
-      if (file) {
-        let sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
-        document.getElementById('fileNameText').textContent = file.name;
-        document.getElementById('fileMetaText').textContent = sizeInMB + " MB • Uploaded Just Now";
+      if (!file) return;
 
-        // Animate progress bar
-        let bar = document.getElementById('progressBar');
-        bar.style.width = '10%';
-        setTimeout(function() {
-          bar.style.width = '100%';
-        }, 200);
+      let sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+      document.getElementById('fileNameText').textContent = file.name;
+      document.getElementById('fileMetaText').textContent = sizeInMB + " MB • Uploading to server...";
 
-        showMessage("Loaded dataset: " + file.name);
+      let bar = document.getElementById('progressBar');
+      bar.style.width = '30%';
+
+      let formData = new FormData();
+      formData.append('file', file);
+
+      fetch(BACKEND_URL + '/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        if (data.error) {
+          showMessage("Error: " + data.error);
+          return;
+        }
+        bar.style.width = '100%';
+        document.getElementById('fileMetaText').textContent = sizeInMB + " MB • Analyzed Successfully";
+        updateDashboardUI(data);
+        showMessage(data.message);
+      })
+      .catch(function(err) {
+        bar.style.width = '0%';
+        showMessage("Backend connect nahi hai ya wake up ho raha hai.");
+      });
+    }
+
+    // Data Cleaning Request to Render Backend
+    function cleanDataset(actionType) {
+      showMessage("Cleaning dataset...");
+
+      fetch(BACKEND_URL + '/clean', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: actionType })
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        if (data.error) {
+          showMessage(data.error);
+          return;
+        }
+        updateDashboardUI(data);
+        showMessage(data.message);
+      })
+      .catch(function(err) {
+        showMessage("Backend abhi connect nahi hua hai.");
+      });
+    }
+
+    // Download Cleaned CSV from Render Backend
+    function downloadCleanedCSV() {
+      if (BACKEND_URL.indexOf("insightai-backend.onrender.com") > -1) {
+        showMessage("Backend abhi connect nahi hua hai!");
+        return;
+      }
+      window.location.href = BACKEND_URL + '/download-csv';
+      showMessage("Downloading cleaned CSV file...");
+    }
+
+    // Render se aaye real data se HTML Table aur Cards update karna
+    function updateDashboardUI(data) {
+      let table = document.getElementById('rawTable');
+      let thead = table.querySelector('thead');
+      let tbody = table.querySelector('tbody');
+
+      let headerHTML = '<tr>';
+      for (let i = 0; i < data.columns.length; i++) {
+        headerHTML += '<th>' + data.columns[i] + '</th>';
+      }
+      headerHTML += '</tr>';
+      thead.innerHTML = headerHTML;
+
+      let bodyHTML = '';
+      for (let r = 0; r < data.records.length; r++) {
+        bodyHTML += '<tr>';
+        for (let c = 0; c < data.records[r].length; c++) {
+          let val = data.records[r][c];
+          if (val === 'NULL') {
+            bodyHTML += '<td class="font-mono text-danger">NULL</td>';
+          } else {
+            bodyHTML += '<td class="font-mono">' + val + '</td>';
+          }
+        }
+        bodyHTML += '</tr>';
+      }
+      tbody.innerHTML = bodyHTML;
+
+      document.getElementById('topRowBadge').textContent = data.rows;
+      document.getElementById('topColBadge').textContent = data.cols;
+
+      let edaCards = document.querySelectorAll('#eda .fs-5');
+      if (edaCards.length >= 4) {
+        edaCards[0].textContent = data.rows + ' × ' + data.cols;
+        edaCards[1].textContent = data.cols + ' Active';
+        edaCards[2].textContent = data.num_cols + ' Num, ' + data.cat_cols + ' Cat';
+        edaCards[3].textContent = data.missing + ' Cells';
+      }
+
+      let heroStats = document.querySelectorAll('#header .stat-number');
+      if (heroStats.length >= 3) {
+        heroStats[0].textContent = data.rows;
+        heroStats[1].textContent = data.health_score + '%';
+        heroStats[2].textContent = data.missing + data.duplicates;
+      }
+
+      document.getElementById('missingIssueText').textContent = data.missing + " empty cells detected across columns.";
+      document.getElementById('dupIssueText').textContent = data.duplicates + " duplicate entries detected in dataset.";
+
+      if (chart3) {
+        chart3.data.labels = data.chart_labels;
+        chart3.data.datasets[0].data = data.chart_values;
+        chart3.update();
       }
     }
 
-    // Show notification popup at bottom right
+    // Show notification popup
     function showMessage(text) {
       let area = document.getElementById('toastArea');
       let box = document.createElement('div');
       box.className = 'custom-card p-3 mb-2 d-flex align-items-center gap-2';
-      box.innerHTML = '<i data-lucide="check-circle" class="text-success" style="width:18px;"></i><span class="small fw-medium">' + text + '</span>';
+      box.innerHTML = '<i data-lucide="check-circle" class="text-success" style="width:18px; flex-shrink:0;"></i><span class="small fw-medium">' + text + '</span>';
 
       area.appendChild(box);
       lucide.createIcons();
 
-      // Remove popup after 3 seconds
       setTimeout(function() {
         box.remove();
       }, 3000);
@@ -989,7 +1182,7 @@
       }
     }
 
-    // Store chart variables so we can reset them on theme change
+    // Store chart variables
     let chart1, chart2, chart3;
 
     // Draw Chart.js Graphs
@@ -1003,12 +1196,11 @@
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { ticks: { color: labelColor }, grid: { color: lineColor } },
-          y: { ticks: { color: labelColor }, grid: { color: lineColor } }
+          x: { ticks: { color: labelColor, font: { size: 11 } }, grid: { color: lineColor } },
+          y: { ticks: { color: labelColor, font: { size: 11 } }, grid: { color: lineColor } }
         }
       };
 
-      // Destroy old charts if they already exist
       if (chart1) chart1.destroy();
       if (chart2) chart2.destroy();
       if (chart3) chart3.destroy();
@@ -1049,4 +1241,3 @@
   </script>
 </body>
 </html>
-

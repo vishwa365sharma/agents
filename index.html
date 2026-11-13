@@ -115,36 +115,6 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
     }
 
-    /* Form Inputs (New for Login Page) */
-    .custom-input {
-      background-color: #111113;
-      border: 1px solid #27272a;
-      color: #fafafa;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: 0.2s;
-    }
-
-    .custom-input:focus {
-      background-color: #18181b;
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-      color: #fafafa;
-      outline: none;
-    }
-
-    body.light-mode .custom-input {
-      background-color: #f8fafc;
-      border: 1px solid #cbd5e1;
-      color: #0f172a;
-    }
-
-    body.light-mode .custom-input:focus {
-      background-color: #ffffff;
-      color: #0f172a;
-    }
-
     /* Buttons */
     .btn-purple {
       background-color: #6366f1;
@@ -296,33 +266,49 @@
     /* Hero Section */
     .hero-box {
       width: 100%;
-      padding: 70px 0;
-      background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.15), transparent 50%), #111113;
+      padding: 55px 0;
+      background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 50%), #111113;
       border-bottom: 1px solid #27272a;
     }
 
     body.light-mode .hero-box {
-      background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.12), transparent 50%), #f1f5f9;
+      background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.12), transparent 50%), #f1f5f9;
       border-bottom: 1px solid #e2e8f0;
     }
 
-    .feature-list-item {
+    .stat-box {
+      background-color: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 14px;
+      padding: 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
+      height: 100%;
     }
 
-    .feature-icon-box {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background-color: rgba(16, 185, 129, 0.15);
-      color: #10b981;
+    body.light-mode .stat-box {
+      background-color: #ffffff;
+      border-color: #e2e8f0;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background-color: rgba(99, 102, 241, 0.15);
+      color: #6366f1;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+    }
+
+    .stat-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
     }
 
     /* Upload Area */
@@ -597,93 +583,60 @@
   </header>
 
   <main>
-    <!-- 1. NEW HERO SECTION (Professional Info + Login/Registration) -->
+    <!-- 1. ORIGINAL HERO SECTION -->
     <section id="header" class="hero-box">
       <div class="container-xxl">
-        <div class="row align-items-center gy-5">
-          
-          <!-- Left Content: Platform Information -->
-          <div class="col-lg-7 pe-lg-5">
-            <span class="section-tag">Enterprise Intelligence Platform</span>
-            <h1 class="display-4 fw-bold mb-4">Transform Raw Data into <span class="gradient-text">Actionable Insights</span></h1>
-            <p class="fs-5 text-muted-custom mb-4">Upload your datasets for automated statistical profiling, missing data hygiene, anomaly detection, and AI-driven executive recommendations. No coding required.</p>
-            
-            <div class="d-flex flex-column mt-4">
-              <div class="feature-list-item">
-                <div class="feature-icon-box"><i data-lucide="check" style="width:18px;"></i></div>
-                <span class="fw-medium">Automated Exploratory Data Analysis (EDA)</span>
-              </div>
-              <div class="feature-list-item">
-                <div class="feature-icon-box"><i data-lucide="check" style="width:18px;"></i></div>
-                <span class="fw-medium">1-Click Data Cleaning & Imputation</span>
-              </div>
-              <div class="feature-list-item">
-                <div class="feature-icon-box"><i data-lucide="check" style="width:18px;"></i></div>
-                <span class="fw-medium">AI-Powered Executive Reports & Visualizations</span>
-              </div>
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-7">
+            <span class="section-tag">Enterprise Intelligence v4.8</span>
+            <h1 class="display-5 fw-bold mb-3">Automated Data Exploration & <span class="gradient-text">AI Diagnostics</span></h1>
+            <p class="fs-5 text-muted-custom mb-4">Upload raw datasets for automated statistical profiling, missing data hygiene, anomaly detection, multidimensional visualizations, and executive recommendations.</p>
+            <div class="d-flex flex-wrap gap-2 hero-buttons">
+              <a href="#upload" class="btn-purple"><i data-lucide="upload-cloud" style="width:18px;"></i><span>Load Dataset</span></a>
+              <a href="#eda" class="btn-outline-simple"><i data-lucide="bar-chart-2" style="width:18px;"></i><span>View Full EDA</span></a>
             </div>
           </div>
 
-          <!-- Right Content: Login / Registration Card -->
           <div class="col-lg-5">
-            <div class="custom-card p-4 p-sm-5" id="authCard">
-              
-              <!-- Login Form Container -->
-              <div id="loginForm">
-                <h3 class="fw-bold mb-1">Welcome Back</h3>
-                <p class="text-muted-custom small mb-4">Sign in to access your analytics workspace.</p>
-                
-                <form onsubmit="handleLogin(event)">
-                  <div class="mb-3">
-                    <label class="form-label small fw-semibold text-muted-custom">Email Address</label>
-                    <input type="email" class="form-control custom-input" placeholder="name@company.com" required>
+            <div class="row g-2 g-sm-3">
+              <div class="col-6">
+                <div class="stat-box">
+                  <div class="stat-icon"><i data-lucide="database" style="width:18px;"></i></div>
+                  <div>
+                    <div class="stat-number">124,500</div>
+                    <div class="text-muted-custom small">Records</div>
                   </div>
-                  <div class="mb-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <label class="form-label small fw-semibold text-muted-custom mb-0">Password</label>
-                      <a href="#" class="small text-decoration-none" style="color: #6366f1;">Forgot?</a>
-                    </div>
-                    <input type="password" class="form-control custom-input mt-2" placeholder="••••••••" required>
-                  </div>
-                  <button type="submit" class="btn-purple w-100 mb-4" style="padding: 12px; border-radius: 8px;">Sign In to Dashboard</button>
-                  
-                  <div class="text-center small text-muted-custom">
-                    Don't have an account? 
-                    <a href="#" onclick="toggleAuthMode(event)" class="fw-semibold text-decoration-none" style="color: #6366f1;">Create Account</a>
-                  </div>
-                </form>
+                </div>
               </div>
-
-              <!-- Registration Form Container (Hidden by default) -->
-              <div id="registerForm" style="display: none;">
-                <h3 class="fw-bold mb-1">Create Account</h3>
-                <p class="text-muted-custom small mb-4">Join to start analyzing your datasets.</p>
-                
-                <form onsubmit="handleRegister(event)">
-                  <div class="mb-3">
-                    <label class="form-label small fw-semibold text-muted-custom">Full Name</label>
-                    <input type="text" class="form-control custom-input" placeholder="John Doe" required>
+              <div class="col-6">
+                <div class="stat-box">
+                  <div class="stat-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);"><i data-lucide="check-circle-2" style="width:18px;"></i></div>
+                  <div>
+                    <div class="stat-number">94.2%</div>
+                    <div class="text-muted-custom small">Health</div>
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label small fw-semibold text-muted-custom">Email Address</label>
-                    <input type="email" class="form-control custom-input" placeholder="name@company.com" required>
-                  </div>
-                  <div class="mb-4">
-                    <label class="form-label small fw-semibold text-muted-custom">Password</label>
-                    <input type="password" class="form-control custom-input" placeholder="••••••••" required>
-                  </div>
-                  <button type="submit" class="btn-purple w-100 mb-4" style="padding: 12px; border-radius: 8px;">Create My Account</button>
-                  
-                  <div class="text-center small text-muted-custom">
-                    Already have an account? 
-                    <a href="#" onclick="toggleAuthMode(event)" class="fw-semibold text-decoration-none" style="color: #6366f1;">Sign In</a>
-                  </div>
-                </form>
+                </div>
               </div>
-
+              <div class="col-6">
+                <div class="stat-box">
+                  <div class="stat-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);"><i data-lucide="alert-triangle" style="width:18px;"></i></div>
+                  <div>
+                    <div class="stat-number">18</div>
+                    <div class="text-muted-custom small">Issues</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="stat-box">
+                  <div class="stat-icon" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);"><i data-lucide="zap" style="width:18px;"></i></div>
+                  <div>
+                    <div class="stat-number">99.4%</div>
+                    <div class="text-muted-custom small">Accuracy</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -744,7 +697,7 @@
         <div class="custom-card mb-3 p-3">
           <div class="row">
             <div class="col-md-6">
-              <input type="text" id="searchBox" class="form-control custom-input w-100 font-mono small" placeholder="Search dataset records..." onkeyup="searchTable()">
+              <input type="text" id="searchBox" class="form-control font-mono small" placeholder="Search dataset records..." onkeyup="searchTable()">
             </div>
           </div>
         </div>
@@ -1080,34 +1033,6 @@
       loadCharts();
     }
 
-    // Toggle Login / Register Forms
-    function toggleAuthMode(event) {
-      event.preventDefault();
-      let loginBox = document.getElementById('loginForm');
-      let registerBox = document.getElementById('registerForm');
-      
-      if (loginBox.style.display === 'none') {
-        loginBox.style.display = 'block';
-        registerBox.style.display = 'none';
-      } else {
-        loginBox.style.display = 'none';
-        registerBox.style.display = 'block';
-      }
-    }
-
-    // Handle Auth Submits
-    function handleLogin(event) {
-      event.preventDefault();
-      showMessage('Login successful! Scroll down to start analyzing.');
-      document.getElementById('upload').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function handleRegister(event) {
-      event.preventDefault();
-      showMessage('Account created successfully! Welcome to the platform.');
-      document.getElementById('upload').scrollIntoView({ behavior: 'smooth' });
-    }
-
     // Real File Upload to Render Backend
     function fileUploaded(event) {
       let file = event.target.files[0];
@@ -1218,6 +1143,13 @@
         edaCards[1].textContent = data.cols + ' Active';
         edaCards[2].textContent = data.num_cols + ' Num, ' + data.cat_cols + ' Cat';
         edaCards[3].textContent = data.missing + ' Cells';
+      }
+
+      let heroStats = document.querySelectorAll('#header .stat-number');
+      if (heroStats.length >= 3) {
+        heroStats[0].textContent = data.rows;
+        heroStats[1].textContent = data.health_score + '%';
+        heroStats[2].textContent = data.missing + data.duplicates;
       }
 
       document.getElementById('missingIssueText').textContent = data.missing + " empty cells detected across columns.";
